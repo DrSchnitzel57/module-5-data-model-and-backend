@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="1110" viewBox="0 0 1320 1110">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#475569" stroke-width="1.5"/></marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #172033; }
+      .title { font-size: 30px; font-weight: bold; }
+      .subtitle { font-size: 20px; fill: #475569; }
+      .entity { fill: #fff; stroke: #64748b; stroke-width: 2; }
+      .header { fill: #e8effb; }
+      .name { font-size: 25px; font-weight: bold; }
+      .field { font-family: monospace; font-size: 21px; }
+      .rel { font-size: 21px; fill: #334155; }
+      .line { fill: none; stroke: #475569; stroke-width: 2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1320" height="1110" fill="#f8fafc"/>
+  <text x="40" y="48" class="title">Gospel Search — Private bookmarks</text>
+  <text x="40" y="82" class="subtitle">Two additional tables + SourceSpan repeated from the source diagram (seven distinct tables total)</text>
+
+  <rect x="40" y="140" width="490" height="320" rx="8" class="entity"/>
+  <path d="M48 140 H522 Q530 140 530 148 V188 H40 V148 Q40 140 48 140" class="header"/>
+  <text x="60" y="173" class="name">User (accounts_user)</text>
+  <text x="60" y="230" class="field">id: bigint [PK]</text>
+  <text x="60" y="266" class="field">username: string [UK]</text>
+  <text x="60" y="302" class="field">password: string (hash only)</text>
+  <text x="60" y="338" class="field">is_active: boolean</text>
+  <text x="60" y="374" class="field">is_staff: boolean</text>
+  <text x="60" y="410" class="field">must_change_password: boolean</text>
+  <text x="60" y="446" class="field">session_revoked_at: datetime, null</text>
+
+  <rect x="770" y="140" width="510" height="320" rx="8" class="entity"/>
+  <path d="M778 140 H1272 Q1280 140 1280 148 V188 H770 V148 Q770 140 778 140" class="header"/>
+  <text x="790" y="173" class="name">SourceSpan (same table)</text>
+  <text x="790" y="230" class="field">id: UUID [PK]</text>
+  <text x="790" y="266" class="field">revision_id: UUID [FK]</text>
+  <text x="790" y="302" class="field">first_unit_id: UUID [FK]</text>
+  <text x="790" y="338" class="field">last_unit_id: UUID [FK]</text>
+  <text x="790" y="374" class="field">start_offset: integer</text>
+  <text x="790" y="410" class="field">end_offset: integer</text>
+  <text x="790" y="446" class="field">citation: string</text>
+
+  <rect x="385" y="630" width="550" height="330" rx="8" class="entity"/>
+  <path d="M393 630 H927 Q935 630 935 638 V678 H385 V638 Q385 630 393 630" class="header"/>
+  <text x="405" y="663" class="name">StudyRecord (study_studyrecord)</text>
+  <text x="405" y="720" class="field">id: UUID [PK]</text>
+  <text x="405" y="754" class="field">user_id: bigint [FK]</text>
+  <text x="405" y="788" class="field">span_id: UUID [FK]</text>
+  <text x="405" y="822" class="field">is_bookmarked: boolean</text>
+  <text x="405" y="856" class="field">bookmarked_at: datetime, nullable</text>
+  <text x="405" y="890" class="field">note_text: text</text>
+  <text x="405" y="924" class="field">edit_version: integer</text>
+
+  <path d="M500 460 V575 H495 V630" class="line"/>
+  <text x="55" y="504" class="rel">owns: 1 → 0..* (one-to-many)</text>
+  <text x="55" y="537" class="subtitle">Each record has exactly one user.</text>
+  <path d="M1250 460 V575 H825 V630" class="line"/>
+  <text x="765" y="504" class="rel">saved as: 1 → 0..* (one-to-many)</text>
+  <text x="765" y="537" class="subtitle">Each record has exactly one span.</text>
+
+  <text x="40" y="1000" class="rel">UNIQUE (user_id, span_id): one study record per user and exact passage.</text>
+  <text x="40" y="1037" class="subtitle">User ↔ SourceSpan: many-to-many through StudyRecord; bookmarks are private to their owner.</text>
+  <text x="40" y="1074" class="subtitle">PK = primary key • FK = foreign key • UK = unique key • 0..* = zero or many</text>
+</svg>

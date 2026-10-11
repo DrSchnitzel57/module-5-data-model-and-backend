@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="1780" viewBox="0 0 1320 1780">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#475569" stroke-width="1.5"/></marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #172033; }
+      .title { font-size: 30px; font-weight: bold; }
+      .subtitle { font-size: 20px; fill: #475569; }
+      .entity { fill: #fff; stroke: #64748b; stroke-width: 2; }
+      .header { fill: #e8effb; }
+      .name { font-size: 25px; font-weight: bold; }
+      .field { font-family: monospace; font-size: 21px; }
+      .rel { font-size: 19px; fill: #334155; }
+      .small { font-size: 17px; fill: #334155; }
+      .line { fill: none; stroke: #475569; stroke-width: 2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1320" height="1780" fill="#f8fafc"/>
+  <text x="40" y="45" class="title">Gospel Search — Source provenance</text>
+  <text x="40" y="78" class="subtitle">Five of seven bookmark-core tables • actual fields • representative attributes</text>
+
+  <rect x="40" y="150" width="420" height="240" rx="8" class="entity"/>
+  <path d="M48 150 H452 Q460 150 460 158 V198 H40 V158 Q40 150 48 150" class="header"/>
+  <text x="60" y="183" class="name">Collection</text>
+  <text x="60" y="232" class="field">id: UUID [PK]</text>
+  <text x="60" y="266" class="field">key: slug [UK]</text>
+  <text x="60" y="300" class="field">name: string</text>
+  <text x="60" y="334" class="field">category: string</text>
+  <text x="60" y="368" class="field">display_order: integer</text>
+
+  <rect x="700" y="150" width="550" height="390" rx="8" class="entity"/>
+  <path d="M708 150 H1242 Q1250 150 1250 158 V198 H700 V158 Q700 150 708 150" class="header"/>
+  <text x="720" y="183" class="name">Document</text>
+  <text x="720" y="232" class="field">id: UUID [PK]</text>
+  <text x="720" y="266" class="field">collection_id: UUID [FK]</text>
+  <text x="720" y="300" class="field">parent_id: UUID [FK, nullable]</text>
+  <text x="720" y="334" class="field">published_revision_id: UUID [FK, null]</text>
+  <text x="720" y="368" class="field">current_revision_id: UUID [FK, null]</text>
+  <text x="720" y="402" class="field">source_key: string</text>
+  <text x="720" y="436" class="field">kind: string</text>
+  <text x="720" y="470" class="field">language: string</text>
+  <text x="720" y="514" class="small">UNIQUE (collection_id, source_key)</text>
+
+  <path d="M460 255 H700" class="line"/>
+  <text x="473" y="219" class="rel">contains</text>
+  <text x="473" y="243" class="rel">1 → 0..* (one-to-many)</text>
+  <path d="M1120 150 V115 H1290 V485 H1250" class="line"/>
+  <text x="715" y="115" class="small">parent: 0..1 → children: 0..* (one-to-many)</text>
+
+  <rect x="400" y="760" width="620" height="390" rx="8" class="entity"/>
+  <path d="M408 760 H1012 Q1020 760 1020 768 V808 H400 V768 Q400 760 408 760" class="header"/>
+  <text x="420" y="793" class="name">DocumentRevision</text>
+  <text x="420" y="842" class="field">id: UUID [PK]</text>
+  <text x="420" y="876" class="field">document_id: UUID [FK]</text>
+  <text x="420" y="910" class="field">title: string</text>
+  <text x="420" y="944" class="field">canonical_url: URL</text>
+  <text x="420" y="978" class="field">canonical_text: text</text>
+  <text x="420" y="1012" class="field">content_hash: string</text>
+  <text x="420" y="1046" class="field">is_fixture: boolean</text>
+  <text x="420" y="1080" class="field">finalized_at: datetime, nullable</text>
+  <text x="420" y="1124" class="small">UNIQUE (document_id, content_hash)</text>
+
+  <path d="M980 540 V760" class="line"/>
+  <text x="995" y="650" class="rel">has revisions</text>
+  <text x="995" y="677" class="rel">1 → 0..*</text>
+  <text x="995" y="704" class="rel">one-to-many</text>
+  <path d="M750 540 V680 H500 V760" class="line"/>
+  <text x="45" y="590" class="rel">published_revision_id / current_revision_id</text>
+  <text x="45" y="620" class="rel">Two optional one-to-one effective pointers:</text>
+  <text x="45" y="650" class="rel">0..1 document ↔ 0..1 selected revision</text>
+  <text x="45" y="709" class="small">Nullable FKs with ownership guards;</text>
+  <text x="45" y="733" class="small">not SQL UNIQUE foreign keys.</text>
+
+  <rect x="40" y="1330" width="460" height="320" rx="8" class="entity"/>
+  <path d="M48 1330 H492 Q500 1330 500 1338 V1378 H40 V1338 Q40 1330 48 1330" class="header"/>
+  <text x="60" y="1363" class="name">SourceUnit</text>
+  <text x="60" y="1420" class="field">id: UUID [PK]</text>
+  <text x="60" y="1454" class="field">revision_id: UUID [FK]</text>
+  <text x="60" y="1488" class="field">ordinal: integer</text>
+  <text x="60" y="1522" class="field">kind: string (e.g. verse)</text>
+  <text x="60" y="1556" class="field">locator: string</text>
+  <text x="60" y="1590" class="field">start_offset: integer</text>
+  <text x="60" y="1624" class="field">end_offset: integer</text>
+
+  <rect x="760" y="1330" width="490" height="350" rx="8" class="entity"/>
+  <path d="M768 1330 H1242 Q1250 1330 1250 1338 V1378 H760 V1338 Q760 1330 768 1330" class="header"/>
+  <text x="780" y="1363" class="name">SourceSpan</text>
+  <text x="780" y="1420" class="field">id: UUID [PK]</text>
+  <text x="780" y="1454" class="field">revision_id: UUID [FK]</text>
+  <text x="780" y="1488" class="field">first_unit_id: UUID [FK]</text>
+  <text x="780" y="1522" class="field">last_unit_id: UUID [FK]</text>
+  <text x="780" y="1556" class="field">start_offset: integer</text>
+  <text x="780" y="1590" class="field">end_offset: integer</text>
+  <text x="780" y="1624" class="field">citation: string</text>
+  <text x="780" y="1658" class="field">span_kind: string</text>
+
+  <path d="M490 1150 V1235 H270 V1330" class="line"/>
+  <text x="45" y="1197" class="rel">contains units: 1 → 0..* (one-to-many)</text>
+  <path d="M950 1150 V1235 H990 V1330" class="line"/>
+  <text x="1010" y="1197" class="rel">anchors spans</text>
+  <text x="1010" y="1221" class="rel">1 → 0..* (one-to-many)</text>
+  <path d="M500 1465 H760" class="line"/>
+  <text x="520" y="1418" class="rel">starts (first_unit_id)</text>
+  <text x="520" y="1443" class="rel">1 → 0..* one-to-many</text>
+  <path d="M500 1580 H760" class="line"/>
+  <text x="520" y="1533" class="rel">ends (last_unit_id)</text>
+  <text x="520" y="1558" class="rel">1 → 0..* one-to-many</text>
+
+  <text x="40" y="1720" class="subtitle">PK = primary key • FK = foreign key • UK = unique key • 0..* = zero or many</text>
+  <text x="40" y="1752" class="subtitle">Arrows run from referenced parent to children, except the labeled document selection pointers.</text>
+</svg>
